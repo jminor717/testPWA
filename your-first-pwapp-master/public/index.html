@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>COR Status PWA</title>
+    <meta name="theme-color" content="#056b99" />
+    <meta name="description" content="Test COR interface with PWA">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/styles/inline.css">
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon" />
+    <link rel="manifest" href="/manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="COR Status PWA">
+    <link rel="apple-touch-icon" href="/images/icons/icon-152x152.png">
+</head>
+
+<body>
+
+    <header class="header">
+        <button id="butOptions" aria-label="open options"></button>
+        <h1>
+            COR Test PWA
+        </h1>
+        <button id="butInstall" aria-label="install app on your device" hidden></button>
+        <button id="butRefresh" aria-label="reload information"></button>
+    </header>
+
+    <main class="main" id="mainpage">
+        <div class=InfoPage hidden>
+
+        </div>
+        <button id="butAdd" aria-label="track new instrumnet" class="fab">
+            <span class="icon add"></span>
+        </button>
+        <div id="about" class="Instrument-card">
+            <button class="remove-about genericCloseBut" id="removeAboutBox">&times;</button>
+            <button class="button">tap the plus to add a new instrument, or here for more information about the
+                app</button>
+        </div>
+
+        <div id="Instrument-template" class="Instrument-card" hidden>
+            <div class="card-last-updated" hidden></div>
+            <div class="Is-Valid" hidden></div>
+            <!--  hidden properties  -->
+            <div class="card-spinner">
+                <svg viewBox="0 0 32 32" width="32" height="32">
+                    <circle cx="16" cy="16" r="14" fill="none"></circle>
+                </svg>
+                <button class="remove-instrument genericCloseBut">&times;</button>
+            </div>
+            <div class="Inventory genericInfoPopup">
+                <button class="remove-Inventory genericCloseBut">&times;</button>
+                <div class="InventoryList"> </div>
+            </div>
+
+            <div class="notificationDetails genericInfoPopup">
+                <button class="remove-Notifications genericCloseBut">&times;</button>
+                <ul class="NotificationsList">
+                    <li class="NotificationsElement" id="NotificationTemplate" hidden>
+                        <div class="sysAlert">
+                            <div class="message-header">
+                                <div>
+                                    <span class="material-icons"></span>
+                                    <span class="message-title"></span>
+                                    <span class="message-time"></span>
+                                    <br>
+                                    <span class="message-code"></span>
+                                </div>
+                            </div>
+                            <div class="message-body">
+                                <p></p>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="InstrumentDetail genericInfoPopup">
+                <button class="remove-instrument-info genericCloseBut">&times;</button>
+                <div class="detailTypeContainer">
+                    <div class="detailTypeHeader">
+                        genneral info
+                    </div>
+                    <hr class="outterHR">
+                    <div class="information">
+                        software version:
+                        <div class="informationValue auto" id="softwareversion.Version"></div>
+                    </div>
+                    <hr class="innerHR">
+                    <div class="information">
+                        software release status:
+                        <div class="informationValue auto" id="softwareversion.IntendedUse"></div>
+                    </div>
+                </div>
+                <div class="detailTypeContainer">
+                    <div class="detailTypeHeader">
+                        inventory information
+                    </div>
+                    <hr class="outterHR">
+                    <div class="information">
+                        open rack slots avalable:
+                        <div class="informationValue auto" id="GeneralInventory.OpenRackSlotCount"></div>
+                    </div>
+                    <hr class="innerHR">
+                    <div class="information">
+                        racks waiting to be inventoried:
+                        <div class="informationValue auto" id="GeneralInventory.RacksPendingInventoryCount"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="genericOverLay" hidden>
+                <div id=overlaySource hidden></div>
+            </div>
+
+            <div class="HeaderButtonsContainer">
+                <button class="remove-instrument genericCloseBut">&times;</button>
+                <span class="notifications">
+                    <span class="notify-badge" hidden></span>
+                    <img src="/images/BellWhite.png" class="BellImg">
+                </span>
+                <span class="instrument-info">
+                    <img src="/images/info.svg" class="BellImg">
+                </span>
+                <div class="offline-message" hidden>not able to connect to instrument (displaying test data)</div>
+            </div>
+            <div class="HeaderWrapper">
+                <span class="instrumentHeader">
+                    <span class="User-given-name"></span>
+
+                    <span class="moduleNames"></span>
+                </span>
+            </div>
+            <button class="ViewInstrumentButton">View Low Inventory</button>
+        </div><!-- end instrument template -->
+    </main>
+
+    <div class="genericOverLay" id="OptiosOverlay" hidden>
+        <div id=OptionsoverlaySource hidden>options</div>
+    </div>
+
+    <div id="options">
+        <!--each setting needs to be in a div with the class SettingContainer and an ID matching the name of a property in the Settings class
+          if the app should updaye the setting when it is clicked the element that needs the event listner needs the class settingElement   
+          the element containing the value of the setting needs the class settingValue   -->
+        <div class="SettingContainer bool" id="DarkModeSwitch">
+            <b>turn on dark mode</b>
+            <label class="switch">
+                <input type="checkbox" id="DarkModeChecked" class="settingValue settingElement">
+                <span class="slider"></span>
+            </label>
+        </div>
+        <hr>
+        <div class="SettingContainer bool" id="ShowAboutSwitch">
+            <b>show about dialog on startup</b>
+            <label class="switch">
+                <input type="checkbox" id="ShowAboutChecked" class="settingValue settingElement" checked>
+                <span class="slider"></span>
+            </label>
+        </div>
+        <hr>
+        <div class="SettingContainer bool" id="ShowNotivicationSwitch">
+            <b>recive a test notification</b>
+            <label class="switch">
+                <input type="checkbox" id="NotivicationChecked" class="settingValue settingElement">
+                <span class="slider"></span>
+            </label>
+        </div>
+        <hr>
+        <div class="SettingContainer bool" id="AutoUpdateSwitch">
+            <b>automaticly update app when online</b>
+            <label class="switch">
+                <input type="checkbox" id="AutoUpdateApp" class="settingValue settingElement" checked>
+                <span class="slider"></span>
+            </label>
+        </div>
+        <hr>
+        <div class="SettingContainer range" id="AutoRefreshSwitch">
+            <b>automaticly poll instruments for updates every</b><br>
+            <input type="range" min="5" max="900" step="1" id="dataRefreshEvery" class="settingValue settingElement"
+                checked>
+            <div class="range-display"></div>
+        </div>
+    </div>
+
+    <div id="addDialogContainer">
+        <div class="dialog">
+            <div class="dialog-title">Add new Instrument</div>
+            <div class="dialog-body">
+                instrument name: <input type="text" id="instrument_name" placeholder="whatever you want">
+                <div id="ForceAddBox">
+                    <input type="checkbox" id="ForceAdd"> Force
+                </div>
+                <br>
+            </div>
+            <div class="dialog-buttons">
+                <button id="butDialogCancel" class="button">Cancel</button>
+                <button id="butDialogAdd" class="button">Add</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="dark" hidden></div>
+
+    <script src="/scripts/conversions.js"></script>
+    <script src="/scripts/views.js"></script>
+    <script src="/scripts/oflineData.js"></script>
+    <script src="/scripts/options.js"></script>
+    <script src="/scripts/ViewUppdater.js"></script>
+    <script src="/scripts/app.js"></script>
+    <!--<script src="/scripts/luxon-1.11.4.js"></script>-->
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js')
+                    .then((reg) => {
+                        console.log('Service worker registered.', reg);
+                        document.getElementById("about").querySelector(".button").textContent += (". Service worker registered".toLocaleUpperCase())
+                    });
+            });
+        }
+    </script>
+    <script>
+        document.getElementById('about').querySelector(".button").addEventListener('click', () => {
+            document.getElementById('about').querySelector(".button").textContent += " here"
+        });
+    </script>
+    <script src="/scripts/install.js"></script>
+</body>
+
+</html>

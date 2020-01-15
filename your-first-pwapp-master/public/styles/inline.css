@@ -1,0 +1,713 @@
+/* z indexes
+main header: 1000
+options sidebar: 103
+popup(inventory, notifications, etc):102
+overlay:101
+
+*/
+* {
+  box-sizing: border-box;
+  color: var(--mainTextColor);
+}
+
+:root {
+  --PrimaryColor: #056b99;
+  --SecondaryColor: #067fc3;
+  --mainBackground: #ececec;
+  --POPUPBackground: #4c637b;
+  --ItemColor: #fff;
+  --addCircleBackground: #3f51b5;
+  --mainTextColor: #242424;
+  --secondaryTextColor: #666;
+  --lowPriorityTextColor: #999;
+  --standOutTextColor: #fff;
+  --oldtheme:#2F3BA2;
+  --oldBackground:#3E4EB8;
+  --secondaryDivider:#500;
+}
+
+.dark {
+  --PrimaryColor: #056b99;
+  --SecondaryColor: #067fc3;
+  --mainBackground: #515151;
+  --POPUPBackground: #4c637b;
+  --ItemColor: #1d1d1d;
+  --addCircleBackground: #3f51b5;
+  --mainTextColor: #efefef;
+  --secondaryTextColor: #b7b7b7;
+  --lowPriorityTextColor: #939393;
+  --standOutTextColor: #fff;
+}
+
+html, body {
+  color: var(--mainTextColor);
+  font-family: 'Helvetica', 'Verdana', sans-serif;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+html {
+  overflow: hidden;
+}
+
+body {
+  align-content: stretch;
+  align-items: stretch;
+  background: var(--mainBackground);
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+}
+#about{
+  padding:16px;
+}
+
+#about .button {
+  background: transparent;
+  border: none;
+  width: 85%;
+}
+
+.remove-about {
+  float: right;
+}
+
+.genericCloseBut{
+  background-color: transparent;
+  border: none;
+  font-size: x-large;
+}
+
+.genericInfoPopup{
+  padding: 5px 5px 5px 5px;
+  background: var(--POPUPBackground);
+  border-radius: 2px;
+  box-shadow: 0 0 14px rgba(0, 0, 0, 0.24), 0 14px 28px rgba(0, 0, 0, 0.48);
+  max-width: inherit;
+  width: 100%;
+  position: absolute;
+  transform: scale(0);
+  transition: transform .3s cubic-bezier(0, 0, 0.21, 1) 0.05s;
+  z-index: 102;
+  top: 0px;
+  left: 0px;
+}
+
+/**
+ * Header
+ */
+
+.header {
+  align-content: center;
+  align-items: stretch;
+  background: var(--PrimaryColor);
+  box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 2px 9px 1px rgba(0, 0, 0, 0.12), 0 4px 2px -2px rgba(0, 0, 0, 0.2);
+  color: var(--ItemColor);
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  font-size: 20px;
+  height: 56px;
+  justify-content: flex-start;
+  padding: 16px 16px 0 16px;
+  position: fixed;
+  transition: transform 0.233s cubic-bezier(0, 0, 0.21, 1) 0.1s;
+  width: 100%;
+  will-change: transform;
+  z-index: 1000;
+  color: var(--standOutTextColor);
+}
+
+.header h1 {
+  flex: 1;
+  font-size: 20px;
+  font-weight: 400;
+  margin: 0;
+  color: var(--standOutTextColor);
+}
+
+.header button {
+  border: none;
+  cursor: pointer;
+  height: 24px;
+  margin-right: 16px;
+  opacity: 0.54;
+  outline: none;
+  overflow: hidden;
+  text-indent: -30000px;
+  transition: opacity 0.333s cubic-bezier(0, 0, 0.21, 1);
+  width: 24px;
+}
+
+.header #butRefresh {
+  background: url(/images/refresh.svg) center center no-repeat;
+}
+
+.header #butOptions {
+  background: url(/images/Background.svg) center center no-repeat;
+}
+
+.header #butInstall {
+  background: url(/images/install.svg) center center no-repeat;
+}
+
+/**
+ * options
+ */
+
+#options {
+  height: 100%;
+  transition: left .3s linear;
+  max-width: 500px;
+  width: 75%;
+  left: -75%;
+  padding: 70px 5px 5px 5px;
+  position: absolute;
+  background: var(--mainBackground);
+  z-index: 103;
+}
+
+
+#options .switch {
+  float: right;
+}
+
+#options .SettingContainer{
+  display: flow-root;
+}
+/**
+ * bolean Switch
+ */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 24px;
+}
+
+.switch input { 
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.switch .slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+  border-radius: 24px;
+}
+
+.switch .slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(14px);
+  -ms-transform: translateX(14px);
+  transform: translateX(14px);
+}
+
+/**
+ * Loading spinner
+ */
+
+.card-spinner {
+  background-color: rgba(255, 255, 255, 0.8);
+  height: 100%;
+  margin-left: -16px;
+  margin-top: -54px;
+  position: absolute;
+  width: 100%;
+  z-index: 1;
+}
+
+.card-spinner svg {
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.card-spinner svg circle {
+  animation: line 1.6s cubic-bezier(0.4, 0, 0.2, 1) infinite, rotate 1.6s linear infinite;
+  box-sizing: border-box;
+  stroke: var(--addCircleBackground);
+  stroke-width: 3px;
+  transform-origin: 50%;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(450deg);
+  }
+}
+
+@keyframes line {
+  0% {
+    stroke-dasharray: 2, 85.964;
+    transform: rotate(0);
+  }
+  50% {
+    stroke-dasharray: 65.973, 21.9911;
+    stroke-dashoffset: 0;
+  }
+  100% {
+    stroke-dasharray: 2, 85.964;
+    stroke-dashoffset: -65.973;
+    transform: rotate(90deg);
+  }
+}
+
+/**
+ * Icons
+ */
+
+.icon {
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.icon.add {
+  background-image: url("/images/add.svg");
+}
+
+/**
+ * Main body
+ */
+
+.main {
+  flex: 1;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding-top: 60px;
+}
+
+.main .fab {
+  background-color: var(--addCircleBackground);
+  border-radius: 50%;
+  bottom: 1rem;
+  height: 56px;
+  padding: 12px;
+  position: fixed;
+  right: 1rem;
+  width: 56px;
+  z-index: 3;
+}
+
+.main .fab .icon {
+  display: inline-block;
+  height: 100%;
+  width: 100%;
+}
+
+/**
+ * Add dialog
+ */
+
+#addDialogContainer {
+  background: rgba(0, 0, 0, 0.57);
+  height: 100%;
+  left: 0;
+  opacity: 0;
+  pointer-events: none;
+  position: fixed;
+  top: 0;
+  transition: opacity 0.333s cubic-bezier(0, 0, 0.21, 1);
+  width: 100%;
+  will-change: opacity;
+}
+
+#addDialogContainer.visible {
+  opacity: 1;
+  pointer-events: auto;
+  z-index: 2;
+}
+
+.dialog {
+  background: var(--ItemColor);
+  border-radius: 2px;
+  box-shadow: 0 0 14px rgba(0, 0, 0, 0.24), 0 14px 28px rgba(0, 0, 0, 0.48);
+  left: 50%;
+  min-width: 280px;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%) translateY(30px);
+  transition: transform 0.333s cubic-bezier(0, 0, 0.21, 1) 0.05s;
+}
+
+.dialog>div {
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+.dialog-title {
+  font-size: 1.25em;
+  padding-top: 20px;
+}
+
+.dialog-body {
+  padding-bottom: 24px;
+  padding-top: 20px;
+}
+
+.dialog-body select {
+  width: 100%;
+}
+
+.dialog-buttons {
+  float: right;
+  padding-bottom: 16px;
+  padding-right: 17px !important;
+}
+
+.dialog .button {
+  background: transparent;
+  border: none;
+  font-size: 14px;
+  text-transform: uppercase;
+}
+
+/**
+ *
+ * Instrument card
+ *
+ */
+
+.Instrument-card {
+  background: var(--ItemColor);
+  border-radius: 2px;
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+  box-sizing: border-box;
+  margin: 16px;
+  padding: 53px 16px 16px 16px;
+  position: relative;
+  max-width: 600px;
+  float: left;
+  width: 90%;
+}
+/*card-spinner   HeaderButtonsContainer*/
+.Instrument-card .remove-instrument {
+  float: right;
+  color: var(--standOutTextColor);
+}
+
+.Instrument-card .card-spinner .remove-instrument {
+  color: var(--mainTextColor);
+  margin: 1px 2px 2px 2px;
+}
+
+.smallHeader {
+  font-size: .75em;
+}
+
+.genericOverLay {
+  background: rgba(0, 0, 0, 0.57);
+  opacity: 1;
+  position: absolute;
+ /* width: 100000px;
+  height: 100000px;
+  margin-left: -10000px;
+  margin-top: -10000px;*/
+  transition: opacity 0.333s cubic-bezier(0, 0, 0.21, 1);
+  will-change: opacity;
+  z-index: 101
+}
+
+/**
+ * Instrument header
+ */
+
+.Instrument-card .HeaderButtonsContainer {
+  position: absolute;
+  top: 0px;
+  background-color: var(--SecondaryColor);
+  width: -webkit-calc(100% - 18px);
+}
+
+.Instrument-card .offline-message{
+  position: absolute;
+  top: 0px;
+  left: 150px;
+  color: var(--standOutTextColor);
+}
+
+.Instrument-card .moduleNames {
+  font-size: 1em;
+  display: inline-flex;
+}
+
+.Instrument-card .User-given-name {
+  font-size: 1.5em;
+  display: inline-flex;
+}
+
+.Instrument-card .notifications {
+  text-align: center;
+  position: relative;
+  border-right: 1px solid var(--PrimaryColor);
+  display: inline-flex;
+  max-height: 50px;
+  height: 50px;
+  width: auto;
+}
+
+.Instrument-card .instrument-info {
+  text-align: center;
+  position: relative;
+  border-right: 1px solid var(--PrimaryColor);
+  display: inline-flex;
+  max-height: 50px;
+  height: 50px;
+  width: auto;
+  /*background: url(/images/Bell.png) center center no-repeat;*/
+}
+
+.Instrument-card .BellImg {
+  max-height: 50px;
+  /*background: url(/images/Bell.png) center center no-repeat;*/
+}
+
+.notify-badge {
+  position: absolute;
+  right: 0px;
+  top: 3px;
+  background: #c73030;
+  text-align: center;
+  border-radius: 20px 20px 20px 20px;
+  color: white;
+  padding: 3px 10px;
+  font-family: "Open Sans Bold", "Open Sans Regular", "Open Sans";
+  font-size: 14px;
+  font-weight: bold;
+}
+
+/**
+ * Instrument inventory
+ */
+
+.Instrument-card .InvenToryItem {
+  height: auto;
+  width: auto;
+  background-color: var(--ItemColor);
+  margin: 0 0 4px 0;
+  border: 1px solid var(--ItemColor);
+  border-radius: 4px;
+}
+
+.Instrument-card .alertImg {
+  height: auto;
+  width: auto;
+  float: right;
+}
+
+.Instrument-card .ViewInstrumentButton {
+  background: transparent;
+  border-radius: 4px;
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+  box-sizing: border-box;
+}
+
+.Instrument-card .remove-Inventory {
+  color: var(--standOutTextColor);
+}
+
+.Instrument-card .InventoryList {
+  padding: 2px 0px 0px 0px;
+}
+
+.Instrument-card .InstrumentInventoryNAme {
+  background-color: transparent;
+  border: none;
+  font-size: large;
+  color: var(--standOutTextColor);
+}
+
+.Instrument-card .DiluentQuantity {
+  float: right;
+}
+
+.Instrument-card .ininvvetoryAlertContainer {
+  float: right;
+  width: 50%;
+}
+
+.Instrument-card .experiationAlert {
+  display: inline-block;
+  padding: 0px 0px 0px 30%;
+}
+
+.Instrument-card .experiationAlertRight {
+  padding: 0px 20% 0px 0px;
+  float: right;
+}
+
+.Instrument-card .InvenToryItem>hr {
+  margin-top: 2px;
+  margin-bottom: 2px
+}
+
+/**
+ * Instrument Detail
+ */
+
+.Instrument-card .information{
+  color: var(--standOutTextColor);
+}
+
+.Instrument-card .informationValue{
+  float: right;
+  color: var(--standOutTextColor);
+}
+
+.Instrument-card .remove-instrument-info{
+  color: var(--standOutTextColor);
+}
+
+.Instrument-card .detailTypeHeader{
+  color: var(--standOutTextColor);
+  font-weight: bold;
+}
+
+.Instrument-card .innerHR{
+  margin: 2px 16px 2px 16px;
+  border: 1px solid var(--secondaryDivider);
+}
+
+.Instrument-card .outterHR{
+  margin-bottom: 2px;
+}
+
+.Instrument-card .detailTypeHeader{
+  left: -16px;
+  padding-top: 10px;
+  position: relative;
+}
+
+.Instrument-card .detailTypeContainer{
+  padding-left: 25px;
+}
+
+/**
+ * Instrument Notifications  InstrumentDetail
+ */
+
+.Instrument-card .remove-Notifications {
+  float: left;
+  color: var(--standOutTextColor);
+}
+
+.Instrument-card .NotificationsList {
+  padding: 5px 5px 5px 5px;
+  margin-bottom: 0px;
+  margin-top: 15px;
+  list-style: none;
+}
+
+.Instrument-card .message-header {
+  padding: 0px 0px 15px 0px;
+}
+
+.Instrument-card .message-code {
+  font-size: .75em;
+  margin-left: 26px;
+  text-transform: uppercase;
+  font-weight: 400;
+  color: var(--secondaryTextColor);
+}
+
+/*
+.Instrument-card .message-name {
+  font-weight: 600;
+  color: #333;
+}
+*/
+
+.Instrument-card .material-icons {
+  width: 26px;
+  min-width: 26px;
+}
+
+.Instrument-card .message-time {
+  font-size: .7em;
+  float: right;
+  color: var(--lowPriorityTextColor);
+  position: relative;
+  top: 5px;
+  font-weight: normal;
+  padding-right: 5px;
+}
+
+.Instrument-card .message-body {
+  padding: 0 0 10px 25px;
+}
+
+.Instrument-card .NotificationsElement {
+  border-top-width: 10px;
+  border-bottom-width: 10px;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  border: solid transparent;
+  list-style: none;
+}
+
+.Instrument-card .sysAlert {
+  border-left: 5px solid #d10018;
+  background: var(--ItemColor);
+  ;
+}
+
+.Instrument-card .sysWarning {
+  border-left: 5px solid #ffb032;
+  background: var(--ItemColor);
+  ;
+}
+
+.danger, .error {
+  color: #D10018;
+}
+
+.warning {
+  color: #ffb032;
+}
+
+.Healthy {
+  color: #008600;
+}
+
+/**
+ * Media query to adjust size of content for small screens  InvenToryItem
+ */
+
+@media (max-width: 450px) {}
